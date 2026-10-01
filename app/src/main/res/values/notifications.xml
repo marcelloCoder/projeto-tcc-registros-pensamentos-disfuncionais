@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_daily_channel">Inspiração diária</string>
+    <string name="notification_daily_description">Uma mensagem motivadora com emoji por dia, a partir das 9h.</string>
+    <string name="notification_saved_channel">Incentivo após um registro</string>
+    <string name="notification_saved_description">Uma mensagem de felicitação quando você adiciona um novo registro.</string>
+    <string name="notification_daily_title">Um momento para você, %1$s</string>
+    <string name="notification_saved_title">Parabéns pelo seu passo, %1$s!</string>
+    <string name="notification_private_preview">Uma mensagem de incentivo espera por você.</string>
+    <string name="notification_permission_denied">Notificações desativadas. Você pode ativá-las nas configurações do aplicativo.</string>
+    <string name="notification_settings">Configurar notificações</string>
+    <string-array name="notification_daily_messages">
+        <item>🌱 Cada pequeno passo de cuidado com você tem valor. Respeite o seu ritmo hoje.</item>
+        <item>☀️ Um novo dia para se tratar com gentileza. Você não precisa resolver tudo de uma vez.</item>
+        <item>💚 Seus sentimentos merecem acolhimento. Reserve um instante para perceber como você está.</item>
+        <item>🌻 Você pode começar de onde está, com o que consegue fazer hoje.</item>
+        <item>✨ Um pensamento não define quem você é. Há espaço para olhar para ele com curiosidade.</item>
+        <item>🫶 Faça uma pausa e respire no seu ritmo. Cuidar de você também é um passo importante.</item>
+        <item>🌿 Reconheça um esforço seu hoje, mesmo que ele pareça pequeno.</item>
+        <item>💛 Você merece a mesma gentileza que oferece às pessoas de quem gosta.</item>
+        <item>🌈 Há dias mais leves e dias mais difíceis. Você pode seguir um passo de cada vez.</item>
+        <item>🤗 Não é preciso fazer tudo perfeitamente. Seu esforço de se conhecer merece respeito.</item>
+    </string-array>
+    <string-array name="notification_saved_messages">
+        <item>🌱 Você reservou um momento para se ouvir. Esse cuidado com você merece ser reconhecido.</item>
+        <item>✨ Registro salvo! Observar seus pensamentos é um passo de autoconhecimento. Valorize seu esforço.</item>
+        <item>💚 Você deu espaço ao que está sentindo. Continue no seu ritmo, com gentileza.</item>
+        <item>👏 Mais um momento de cuidado registrado. Reconheça a dedicação que você teve consigo.</item>
+        <item>🌻 Colocar seus pensamentos em palavras exige disposição. Parabéns por esse passo!</item>
+        <item>🫶 Você se permitiu olhar para sua experiência. Cada registro pode abrir espaço para novas reflexões.</item>
+    </string-array>
+</resources>

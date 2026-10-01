@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_app">#EAF4FB</color>
+    <color name="surface_primary">#FFFFFFFF</color>
+    <color name="surface_soft">#F5F7FC</color>
+    <color name="chip_surface">#E9F0FF</color>
+    <color name="stroke_soft">#DCE4F0</color>
+    <color name="primary">#3768E8</color>
+    <color name="primary_dark">#294FBA</color>
+    <color name="text_primary">#162033</color>
+    <color name="text_muted">#687487</color>
+    <color name="danger">#C84D4D</color>
+    <color name="bottom_nav_selected">#3768E8</color>
+    <color name="bottom_nav_unselected">#8090A5</color>
+    <color name="motivation_green">#78CCA7</color>
+    <color name="motivation_green_middle">#ADE4C1</color>
+    <color name="motivation_green_light">#DCF5D9</color>
+    <color name="motivation_text">#153E32</color>
+</resources>

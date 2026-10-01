@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "216763253210",
+    "project_id": "mind-check-24259",
+    "storage_bucket": "mind-check-24259.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216763253210:android:aefd2e0c15f41a790d00e3",
+        "android_client_info": {
+          "package_name": "br.com.mcoder.primeiroprojeto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB21aoSrWvrJIr049nK_BX_0lm_NVvPfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

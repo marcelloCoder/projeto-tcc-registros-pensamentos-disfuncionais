@@ -38,7 +38,7 @@
                 android:contentDescription="@string/more_options"
                 android:padding="12dp"
                 android:src="@android:drawable/ic_menu_more"
-                android:tint="@color/text_primary" />
+                app:tint="@color/text_primary" />
         </LinearLayout>
 
         <LinearLayout

@@ -23,8 +23,18 @@
     <string name="no_entries_yet">Nenhum registro ainda</string>
     <string name="search_hint">Buscar situação, pensamento ou emoção</string>
     <plurals name="entries_shown">
-        <item quantity="one">%1$d registro exibido</item>
-        <item quantity="other">%1$d registros exibidos</item>
+        <item quantity="one">%1$d de %2$d registro exibido</item>
+        <item quantity="other">%1$d de %2$d registros exibidos</item>
+    </plurals>
+    <string name="show_more_entries">Mostrar mais</string>
+    <string name="entries_all_shown">Todos os registros encontrados estão exibidos.</string>
+    <plurals name="entries_remaining">
+        <item quantity="one">%1$d registro restante</item>
+        <item quantity="other">%1$d registros restantes</item>
+    </plurals>
+    <plurals name="show_more_entries_accessibility">
+        <item quantity="one">Mostrar mais %1$d registro</item>
+        <item quantity="other">Mostrar mais %1$d registros</item>
     </plurals>
     <string name="empty_state_title">Nenhum pensamento registrado ainda</string>
     <string name="empty_state_body">Crie seu primeiro registro para acompanhar situações, pensamentos automáticos e emoções ao longo do tempo.</string>

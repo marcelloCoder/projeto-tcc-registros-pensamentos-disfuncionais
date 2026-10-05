@@ -20,6 +20,7 @@ import br.com.mcoder.primeiroprojeto.data.AppGraph
 import br.com.mcoder.primeiroprojeto.data.MotivationService
 import br.com.mcoder.primeiroprojeto.databinding.FragmentThoughtListBinding
 import br.com.mcoder.primeiroprojeto.databinding.HeaderThoughtListBinding
+import br.com.mcoder.primeiroprojeto.databinding.FooterThoughtListBinding
 import br.com.mcoder.primeiroprojeto.model.ThoughtQuery
 import br.com.mcoder.primeiroprojeto.model.ThoughtRecord
 import br.com.mcoder.primeiroprojeto.util.DateTimeFormatterUtil
@@ -47,6 +48,9 @@ class ThoughtListFragment : Fragment() {
     private val binding get() = _binding!!
     private var _headerBinding: HeaderThoughtListBinding? = null
     private val header get() = _headerBinding!!
+    private var _footerBinding: FooterThoughtListBinding? = null
+    private val footer get() = _footerBinding!!
+    private var pagination = ThoughtListPagination()
     private lateinit var adapter: ThoughtListAdapter
     private var allThoughts: List<ThoughtRecord> = emptyList()
     private var currentSearchTerm: String = ""
@@ -69,10 +73,23 @@ class ThoughtListFragment : Fragment() {
         val periodState = savedInstanceState ?: arguments
         dateFrom = periodState?.getString(STATE_FROM)?.let(LocalDate::parse)
         dateTo = periodState?.getString(STATE_TO)?.let(LocalDate::parse)
+        currentSearchTerm = savedInstanceState?.getString(STATE_SEARCH).orEmpty()
+        currentEmotion = savedInstanceState?.getString(STATE_EMOTION) ?: ThoughtQuery.ALL_EMOTIONS
+        pagination = ThoughtListPagination(savedInstanceState?.getInt(STATE_VISIBLE_LIMIT) ?: ThoughtListPagination.PAGE_SIZE)
 
         _headerBinding = HeaderThoughtListBinding.inflate(layoutInflater, binding.listThoughts, false)
         binding.listThoughts.addHeaderView(header.root, null, false)
         (binding.layoutEmpty.parent as ViewGroup).removeView(binding.layoutEmpty)
+        _footerBinding = FooterThoughtListBinding.inflate(layoutInflater, binding.listThoughts, false)
+        footer.emptyContainer.addView(binding.layoutEmpty)
+        binding.listThoughts.addFooterView(footer.root, null, false)
+        footer.buttonShowMore.setOnClickListener {
+            val position = binding.listThoughts.firstVisiblePosition
+            val offset = binding.listThoughts.getChildAt(0)?.top ?: 0
+            pagination.showMore()
+            applyFilters()
+            binding.listThoughts.setSelectionFromTop(position, offset)
+        }
 
         adapter = ThoughtListAdapter(requireContext(), ::showItemMenu)
         binding.listThoughts.adapter = adapter
@@ -90,6 +107,7 @@ class ThoughtListFragment : Fragment() {
             applyFilters()
         }
 
+        header.searchThoughts.setQuery(currentSearchTerm, false)
         header.searchThoughts.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 currentSearchTerm = query.orEmpty()
@@ -163,11 +181,15 @@ class ThoughtListFragment : Fragment() {
         super.onSaveInstanceState(outState)
         outState.putString(STATE_FROM, dateFrom?.toString())
         outState.putString(STATE_TO, dateTo?.toString())
+        outState.putString(STATE_SEARCH, currentSearchTerm)
+        outState.putString(STATE_EMOTION, currentEmotion)
+        outState.putInt(STATE_VISIBLE_LIMIT, pagination.visibleLimit)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _headerBinding = null
+        _footerBinding = null
         _binding = null
     }
 
@@ -205,24 +227,27 @@ class ThoughtListFragment : Fragment() {
     }
 
     private fun applyFilters() {
-        val filteredThoughts = ThoughtFilterEngine.apply(
-            allThoughts,
-            ThoughtQuery(
+        val query = ThoughtQuery(
                 searchTerm = currentSearchTerm,
                 emotion = currentEmotion,
                 dateFrom = dateFrom,
                 dateTo = dateTo
-            )
         )
+        val filteredThoughts = ThoughtFilterEngine.apply(allThoughts, query)
+        val page = pagination.page(filteredThoughts, query)
         binding.layoutEmpty.isVisible = filteredThoughts.isEmpty()
-        if (filteredThoughts.isEmpty()) {
-            if (binding.listThoughts.footerViewsCount == 0) {
-                binding.listThoughts.addFooterView(binding.layoutEmpty, null, false)
-            }
+        footer.emptyContainer.isVisible = filteredThoughts.isEmpty()
+        footer.layoutPagination.isVisible = filteredThoughts.isNotEmpty()
+        footer.buttonShowMore.isVisible = page.hasMore
+        if (page.hasMore) {
+            footer.textRemaining.text = resources.getQuantityString(R.plurals.entries_remaining, page.remainingCount, page.remainingCount)
+            footer.buttonShowMore.contentDescription = resources.getQuantityString(
+                R.plurals.show_more_entries_accessibility, page.nextCount, page.nextCount
+            )
         } else {
-            binding.listThoughts.removeFooterView(binding.layoutEmpty)
+            footer.textRemaining.setText(R.string.entries_all_shown)
         }
-        adapter.submitList(filteredThoughts)
+        adapter.submitList(page.records)
         val hasPeriod = dateFrom != null && dateTo != null
         header.textPeriodFilter.isVisible = hasPeriod
         header.buttonClearPeriod.isVisible = hasPeriod
@@ -239,7 +264,7 @@ class ThoughtListFragment : Fragment() {
             if (allThoughts.isEmpty()) R.string.empty_state_body else R.string.period_no_results_hint
         )
         header.textResults.text = resources.getQuantityString(
-            R.plurals.entries_shown, filteredThoughts.size, filteredThoughts.size
+            R.plurals.entries_shown, page.totalCount, page.records.size, page.totalCount
         )
     }
 
@@ -318,6 +343,9 @@ class ThoughtListFragment : Fragment() {
         const val TAG = "ThoughtListFragment"
         private const val STATE_FROM = "period_from"
         private const val STATE_TO = "period_to"
+        private const val STATE_SEARCH = "search_term"
+        private const val STATE_EMOTION = "emotion_filter"
+        private const val STATE_VISIBLE_LIMIT = "visible_limit"
 
         fun newInstance(from: LocalDate, to: LocalDate) = ThoughtListFragment().apply {
             arguments = Bundle().apply {

@@ -2,7 +2,6 @@ package br.com.mcoder.primeiroprojeto.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -183,20 +182,15 @@ class ThoughtEditorFragment : Fragment() {
         EmotionOption.entries.forEachIndexed { index, option ->
             val item = ItemEmotionBinding.inflate(layoutInflater, binding.emotionGrid, false)
             item.root.layoutParams = GridLayout.LayoutParams(
-                GridLayout.spec(index / binding.emotionGrid.columnCount),
+                GridLayout.spec(index / binding.emotionGrid.columnCount, GridLayout.FILL),
                 GridLayout.spec(index % binding.emotionGrid.columnCount, 1f)
             ).apply {
                 width = 0
                 height = item.root.layoutParams.height
                 setMargins(dp(3), dp(3), dp(3), dp(3))
             }
-            // The supplied PNG already includes its Portuguese caption.
-            val bitmap = BitmapFactory.decodeResource(
-                resources,
-                EmotionImages.forOption(option),
-                BitmapFactory.Options().apply { inSampleSize = 2 }
-            )
-            item.imageEmotion.setImageBitmap(bitmap)
+            item.imageEmotion.setImageBitmap(EmotionImages.forPicker(resources, option))
+            item.textEmotionLabel.text = option.label
             item.root.contentDescription = option.label
             item.root.isSaveEnabled = false
             item.root.setOnClickListener {
